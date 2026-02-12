@@ -1,50 +1,246 @@
-# Welcome to your Expo app 👋
+# 🚀 Expo + NativeWind + Zustand + Supabase + RevenueCat Boilerplate
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A production-ready React Native boilerplate built with modern tools and best practices.
 
-## Get started
+## ✨ Features
 
-1. Install dependencies
+- 📱 **Expo SDK 54** - Latest Expo framework with file-based routing
+- 🎨 **NativeWind v4** - Tailwind CSS for React Native
+- 🔄 **Zustand** - Lightweight state management
+- 🔐 **Supabase** - Backend as a Service (Auth + Database)
+- 💰 **RevenueCat** - In-app purchases and subscriptions (ready to integrate)
+- 📝 **TypeScript** - Full type safety
+- 🎯 **ESLint** - Code quality and consistency
 
+## 📦 Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Expo | React Native framework |
+| NativeWind | Styling with Tailwind CSS |
+| Zustand | State management |
+| Supabase | Authentication & Database |
+| TypeScript | Type safety |
+| Expo Router | File-based navigation |
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ or Bun
+- iOS Simulator (Mac only) or Android Emulator
+- Expo Go app (for testing on physical devices)
+
+### Installation
+
+1. **Clone the repository**
    ```bash
+   git clone <your-repo-url>
+   cd expo-nativewind-zustand-supabase-revenuecat-boilerplate
+   ```
+
+2. **Install dependencies**
+   ```bash
+   bun install
+   # or
    npm install
    ```
 
-2. Start the app
-
-   ```bash
-   npx expo start
+3. **Set up environment variables**
+   
+   Copy the `.env` file and add your Supabase credentials:
+   ```env
+   EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
+   EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
-In the output, you'll find options to open the app in a
+4. **Start the development server**
+   ```bash
+   bun start
+   # or
+   npm start
+   ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 📚 Documentation
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **[Supabase Setup Guide](./SUPABASE_SETUP.md)** - Complete Supabase integration guide
+- **[Zustand Guide](./ZUSTAND_GUIDE.md)** - State management documentation
+- **[Example Components](./components/examples/)** - Ready-to-use component examples
 
-## Get a fresh project
+## 🏗️ Project Structure
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+├── app/                    # Expo Router pages
+├── components/            # Reusable components
+│   └── examples/         # Example implementations
+├── hooks/                # Custom React hooks
+│   ├── useAuth.ts       # Combined auth hook
+│   └── useSupabaseAuth.ts # Supabase auth hook
+├── lib/                  # Library configurations
+│   └── supabase.ts      # Supabase client
+├── store/               # Zustand stores
+│   ├── authStore.ts    # Authentication state
+│   ├── userStore.ts    # User profile state
+│   ├── appStore.ts     # App-wide state
+│   └── index.ts        # Store exports
+├── types/              # TypeScript types
+│   ├── database.types.ts # Supabase DB types
+│   └── async-storage.d.ts # AsyncStorage types
+├── .env               # Environment variables (gitignored)
+└── global.css        # Global styles
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🔐 Authentication
 
-## Learn more
+This boilerplate includes a complete authentication system powered by Supabase and Zustand.
 
-To learn more about developing your project with Expo, look at the following resources:
+### Quick Example
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```typescript
+import { useAuth } from '@/hooks/useAuth';
 
-## Join the community
+function LoginScreen() {
+  const { signIn, loading, error } = useAuth();
 
-Join our community of developers creating universal apps.
+  const handleLogin = async () => {
+    const { error } = await signIn('user@example.com', 'password');
+    if (!error) {
+      // Navigate to home
+    }
+  };
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+  return <LoginForm onSubmit={handleLogin} />;
+}
+```
+
+See [ZUSTAND_GUIDE.md](./ZUSTAND_GUIDE.md) for complete documentation.
+
+## 💾 Database
+
+The boilerplate includes a pre-configured `users` table with Row Level Security (RLS) enabled.
+
+### Schema
+
+```sql
+users (
+  id UUID PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  full_name TEXT,
+  avatar_url TEXT,
+  created_at TIMESTAMPTZ,
+  updated_at TIMESTAMPTZ
+)
+```
+
+See [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for database operations.
+
+## 🎨 Styling
+
+This project uses **NativeWind v4** for styling with Tailwind CSS.
+
+```typescript
+<View className="flex-1 items-center justify-center bg-white">
+  <Text className="text-2xl font-bold text-gray-900">
+    Hello World
+  </Text>
+</View>
+```
+
+## 🔄 State Management
+
+Zustand stores are organized by domain:
+
+- **authStore** - Authentication state
+- **userStore** - User profile data
+- **appStore** - App-wide settings (theme, notifications, etc.)
+
+```typescript
+import { useAuthStore } from '@/store/authStore';
+
+function MyComponent() {
+  const user = useAuthStore((state) => state.user);
+  const signOut = useAuthStore((state) => state.signOut);
+}
+```
+
+## 📱 Available Scripts
+
+```bash
+# Start development server
+bun start
+
+# Start on specific platform
+bun run ios
+bun run android
+bun run web
+
+# Lint code
+bun run lint
+
+# Reset project (removes example code)
+bun run reset-project
+```
+
+## 🛠️ Adding RevenueCat
+
+RevenueCat integration is ready to be added. Follow these steps:
+
+1. Install RevenueCat SDK
+   ```bash
+   bun add react-native-purchases
+   ```
+
+2. Configure RevenueCat in your app
+3. Create a `subscriptionStore.ts` in the `store/` directory
+4. Add subscription components
+
+## 📝 Environment Variables
+
+Required environment variables:
+
+```env
+# Supabase
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+# RevenueCat (when ready)
+# EXPO_PUBLIC_REVENUECAT_API_KEY=your-api-key
+```
+
+## 🔒 Security
+
+- ✅ Environment variables are gitignored
+- ✅ Row Level Security (RLS) enabled on database
+- ✅ Only public anon key used on client
+- ✅ TypeScript for type safety
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📄 License
+
+MIT License - feel free to use this boilerplate for your projects!
+
+## 🙏 Acknowledgments
+
+- [Expo](https://expo.dev)
+- [NativeWind](https://www.nativewind.dev)
+- [Zustand](https://github.com/pmndrs/zustand)
+- [Supabase](https://supabase.com)
+- [RevenueCat](https://www.revenuecat.com)
+
+## 📞 Support
+
+For issues and questions:
+- Check the [documentation files](./ZUSTAND_GUIDE.md)
+- Review [example components](./components/examples/)
+- Open an issue on GitHub
+
+---
+
+**Happy coding! 🎉**
